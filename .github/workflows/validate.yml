@@ -1,0 +1,24 @@
+name: validate-and-analyze
+
+on:
+  push:
+    paths:
+      - "skill-log.jsonl"
+      - "schema/**"
+      - "scripts/**"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install jsonschema
+        run: pip install jsonschema
+      - name: Validate log against schema
+        run: python3 scripts/validate-log.py skill-log.jsonl schema/session-entry.schema.json
+      - name: Print weekly analysis
+        run: python3 scripts/analyze.py skill-log.jsonl

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness session log entry",
+  "description": "One object per agent session. Append to skill-log.jsonl. Objective facts only — NOT self-graded quality (agents over-rate their own work).",
+  "type": "object",
+  "required": ["session_id", "date", "project", "skills_used", "verify_passed"],
+  "additionalProperties": false,
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "Unique id, convention: YYYY-MM-DD-project-shorttask"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "project": {
+      "type": "string",
+      "description": "Project slug, e.g. 'codelab', 'skophos'"
+    },
+    "task": {
+      "type": "string",
+      "description": "Short human description of the task"
+    },
+    "skills_used": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Skills invoked this session"
+    },
+    "agents_spawned": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of sub-agents/adversaries spawned"
+    },
+    "verify_passed": {
+      "type": "boolean",
+      "description": "Did the computational gate (scripts) pass?"
+    },
+    "verify_failures": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What the gate flagged, if anything"
+    },
+    "tokens_est": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Estimated total tokens for the session"
+    },
+    "duration_min": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Wall-clock minutes"
+    },
+    "errors_caught_by_sensors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Issues the computational sensors caught (good — they worked)"
+    },
+    "errors_found_later": {
+      "type": ["string", "null"],
+      "description": "HUMAN-filled, days later. A bug that slipped through. The most valuable signal — reveals what the sensors MISS."
+    }
+  }
+}
